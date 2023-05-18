@@ -7,6 +7,7 @@ import plotly.graph_objects as go
 from keras import Sequential
 from keras.layers import LSTM, Dropout, RepeatVector, TimeDistributed, Dense
 from matplotlib import pyplot as plt
+import scipy.stats as stats
 from sklearn.preprocessing import StandardScaler
 
 from make_df import make_df
@@ -83,20 +84,20 @@ X_train_pred = model.predict(X_train, verbose=0)
 
 train_mae_loss = np.mean(np.abs(X_train_pred - X_train), axis=1)
 # 1
-plt.hist(train_mae_loss, bins=50)
-plt.xlabel('Train MAE loss')
-plt.ylabel('Number of Samples')
-print("loss")
-print(train_mae_loss)
-threshold = np.percentile(train_mae_loss, 30)
-print(f'Reconstruction error threshold: {threshold}')
+# plt.hist(train_mae_loss, bins=50)
+# plt.xlabel('Train MAE loss')
+# plt.ylabel('Number of Samples')
+# print("loss")
+# print(train_mae_loss)
+# threshold = np.percentile(train_mae_loss, 30)
+# print(f'Reconstruction error threshold: {threshold}')
 
 # 2
-# alpha = 0.1
-# N = len(train_mae_loss)
-# sample_std = np.std(train_mae_loss)
-# t = stats.t.ppf(1 - alpha / 2, N - 1)
-# threshold = t * sample_std
+alpha = 0.1
+N = len(train_mae_loss)
+sample_std = np.std(train_mae_loss)
+t = stats.t.ppf(1 - alpha / 2, N - 1)
+threshold = t * sample_std
 
 print("Threshold:", threshold)
 
